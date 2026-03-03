@@ -1,3 +1,4 @@
+import statistics
 import sys
 import csv
 import pandas as pd
@@ -18,10 +19,20 @@ def getCutOff(df, column_name, trt_name):
     N = df[column_name].size
     SStotal = (N - 1) * s2_all
 
-    t = df[trt_name].value_counts().size
-    SStrt = (t - 1) * s2_all
+    t = df[trt_name].unique().size
 
-    SSerror = SStotal - SStrt
+
+    for i in range(t):
+        n = df[trt_name].value_counts().values[i]
+        print(n)
+
+        trt_datai = df[df[trt_name] == df[trt_name].value_counts().index[i]].values
+        print(trt_datai)
+
+
+    # SSerror = sum()
+
+    # print(SSerror)
 
 
 
