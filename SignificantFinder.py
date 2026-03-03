@@ -20,17 +20,16 @@ def getCutOff(df, column_name, trt_name):
     SStotal = (N - 1) * s2_all
 
     t = df[trt_name].unique().size
-
+    SSerror = 0
 
     for i in range(t):
         n = df[trt_name].value_counts().values[i]
-        print(n)
+        s2_trti= df.groupby(trt_name)[column_name].var().values[i]
+        SSerror += (n-1) * s2_trti
+    print(SSerror)
 
-        trt_datai = df[df[trt_name] == df[trt_name].value_counts().index[i]].values
-        print(trt_datai)
-
-
-    # SSerror = sum()
+    SStrt = SStotal - SSerror
+    print(SStrt)
 
     # print(SSerror)
 
