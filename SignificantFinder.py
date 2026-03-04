@@ -69,22 +69,30 @@ def significantFinder(csvfile, alpha):
     for i in range(t):
         row = []
         if i == 0:
-            header.append("")
+            header.append('')
+
         header.append(trt_meansi.index[i])
         row.append(trt_meansi.index[i])
         for j in range(t):
+            if j < i:
+                row.append('X')
+                continue
             if trt_meansi.index[i] == trt_meansi.index[j]:
                 row.append('X')
-                break
+                continue
             else:
                 sig_value = trt_meansi.values[i] - trt_meansi.values[j]
                 if abs(sig_value) > cutoff_value:
                     sig_diff.append(trt_meansi.index[i] + "-" + trt_meansi.index[j])
                     row.append(sig_value)
-                row.append(sig_value)
+                else:
+                    row.append(sig_value)
+        print(row)
         data.append(row)
+        print(header)
 
-    table = tb.tabulate(data, headers=header,tablefmt="fancy_grid")
+    print('header', header)
+    table = tb.tabulate(data, headers=header,tablefmt="grid")
     print(table)
 
 if __name__ == '__main__':
