@@ -40,12 +40,18 @@ def getCutoff(csvfile, alpha):
     N = df[column_name].size
     t = df[trt_name].unique().size
 
+
     df_error = N-t
+    c = (t*(t-1))/(2)
+
+    alpha_prime = alpha/c
+
     MSerror= getMSE(df, column_name, trt_name)
 
     print(MSerror)
-    t_crit = stats.t.ppf(q=1-(alpha/2), df=df_error)
+    t_crit = stats.t.ppf(q=1-(alpha_prime/2), df=df_error)
     cutoff = t_crit * math.sqrt(MSerror * (2/t))
+    print(t_crit)
     print(cutoff)
 
 
