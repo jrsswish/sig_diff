@@ -6,6 +6,7 @@ import numpy as np
 import statistics as st
 import scipy.stats as stats
 import math
+import tabulate as tb
 
 def inputHandler(csvfile):
     df = pd.read_csv(csvfile)
@@ -61,25 +62,30 @@ def significantFinder(csvfile, alpha):
     cutoff_value = getCutoff(csvfile, alpha)
 
     trt_meansi = df.groupby(trt_name).mean()
-
     sig_diff = []
+    data = []
+    header = []
 
     for i in range(t):
+        row = []
+        if i == 0:
+            header.append("")
+        header.append(trt_meansi.index[i])
+        row.append(trt_meansi.index[i])
         for j in range(t):
             if trt_meansi.index[i] == trt_meansi.index[j]:
+                row.append('X')
                 break
             else:
                 sig_value = trt_meansi.values[i] - trt_meansi.values[j]
-                print(sig_value)
                 if abs(sig_value) > cutoff_value:
                     sig_diff.append(trt_meansi.index[i] + "-" + trt_meansi.index[j])
+                    row.append(sig_value)
+                row.append(sig_value)
+        data.append(row)
 
-    print(sig_diff)
-
-
-
-
-
+    table = tb.tabulate(data, headers=header,tablefmt="fancy_grid")
+    print(table)
 
 if __name__ == '__main__':
     csvfile = sys.argv[1]
