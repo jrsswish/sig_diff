@@ -4,6 +4,7 @@ import csv
 import pandas as pd
 import numpy as np
 import statistics as st
+import math
 
 def inputHandler(csvfile):
     df = pd.read_csv(csvfile)
@@ -14,7 +15,7 @@ def inputHandler(csvfile):
     print(column_name)
     return df, column_name, trt_name
 
-def getCutOff(df, column_name, trt_name):
+def getCutOff(df, column_name, trt_name, t_crit):
     s2_all = st.variance(df[column_name])
     N = df[column_name].size
     SStotal = (N - 1) * s2_all
@@ -31,11 +32,16 @@ def getCutOff(df, column_name, trt_name):
     SStrt = SStotal - SSerror
     print(SStrt)
 
-    # print(SSerror)
+    df_trt = t-1
+    df_error = N-t
+    df_total = N-1
 
+    MSerror = df_error / df_error
+
+    cutoff = t_crit * math.sqrt(MSerror * (2/n))
 
 
 if __name__ == '__main__':
     csvfile = sys.argv[1]
     df, column_name, trt_name = inputHandler(csvfile)
-    getCutOff(df, column_name, trt_name)
+    getCutOff(df, column_name, trt_name,)
