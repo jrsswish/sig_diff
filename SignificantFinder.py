@@ -31,7 +31,7 @@ def getMSE(df, column_name, trt_name, ):
 
     df_error = N-t
 
-    MSerror = df_error / df_error
+    MSerror = SSerror / df_error
 
     return MSerror
 
@@ -43,8 +43,8 @@ def getCutoff(csvfile, alpha):
     df_error = N-t
     MSerror= getMSE(df, column_name, trt_name)
 
-    t_crit = stats.t.ppf(1-(alpha/2), N-t)
-
+    print(MSerror)
+    t_crit = stats.t.ppf(q=1-(alpha/2), df=df_error)
     cutoff = t_crit * math.sqrt(MSerror * (2/t))
     print(cutoff)
 
