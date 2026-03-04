@@ -87,11 +87,8 @@ def significantFinder(csvfile, alpha):
                     row.append(sig_value)
                 else:
                     row.append(sig_value)
-        print(row)
         data.append(row)
-        print(header)
 
-    print('header', header)
     table = tb.tabulate(data, headers=header,tablefmt="grid")
     print(table)
 
