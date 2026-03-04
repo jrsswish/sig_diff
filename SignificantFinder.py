@@ -58,8 +58,23 @@ def significantFinder(csvfile, alpha):
     N = df[column_name].size
     t = df[trt_name].unique().size
 
+    cutoff_value = getCutoff(csvfile, alpha)
 
-    trt_meansi = df.groupby(trt_name).mean().values
+    trt_meansi = df.groupby(trt_name).mean()
+
+    sig_diff = []
+
+    for i in range(t):
+        for j in range(t):
+            if trt_meansi.index[i] == trt_meansi.index[j]:
+                break
+            else:
+                sig_value = trt_meansi.values[i] - trt_meansi.values[j]
+                print(sig_value)
+                if abs(sig_value) > cutoff_value:
+                    sig_diff.append(trt_meansi.index[i] + "-" + trt_meansi.index[j])
+
+    print(sig_diff)
 
 
 
