@@ -48,14 +48,25 @@ def getCutoff(csvfile, alpha):
 
     MSerror= getMSE(df, column_name, trt_name)
 
-    print(MSerror)
     t_crit = stats.t.ppf(q=1-(alpha_prime/2), df=df_error)
     cutoff = t_crit * math.sqrt(MSerror * (2/t))
-    print(t_crit)
-    print(cutoff)
+
+    return cutoff
+
+def significantFinder(csvfile, alpha):
+    df, column_name, trt_name = inputHandler(csvfile)
+    N = df[column_name].size
+    t = df[trt_name].unique().size
+
+
+    trt_meansi = df.groupby(trt_name).mean().values
+
+
+
+
 
 
 if __name__ == '__main__':
     csvfile = sys.argv[1]
-    getCutoff(csvfile, 0.05)
+    significantFinder(csvfile, 0.05)
 
