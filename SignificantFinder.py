@@ -15,7 +15,7 @@ def inputHandler(csvfile):
     print(column_name)
     return df, column_name, trt_name
 
-def getCutOff(df, column_name, trt_name, t_crit):
+def getMSE(df, column_name, trt_name, ):
     s2_all = st.variance(df[column_name])
     N = df[column_name].size
     SStotal = (N - 1) * s2_all
@@ -32,16 +32,17 @@ def getCutOff(df, column_name, trt_name, t_crit):
     SStrt = SStotal - SSerror
     print(SStrt)
 
-    df_trt = t-1
     df_error = N-t
-    df_total = N-1
 
     MSerror = df_error / df_error
 
-    cutoff = t_crit * math.sqrt(MSerror * (2/n))
+    return MSerror
 
+def getCutoff(csvfile, alpha):
+    df, column_name, trt_name = inputHandler(csvfile)
+    MSerror = getMSE(df, column_name, trt_name)
 
 if __name__ == '__main__':
     csvfile = sys.argv[1]
-    df, column_name, trt_name = inputHandler(csvfile)
-    getCutOff(df, column_name, trt_name,)
+    getCutoff(csvfile, 0.95)
+
