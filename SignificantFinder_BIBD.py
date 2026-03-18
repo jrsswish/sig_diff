@@ -16,17 +16,26 @@ def getMSE(csvfile):
     df, block_name, trt_name, response = inputHandler(csvfile)
     b= df[block_name].size
     t= df[trt_name].size
+    N = df[response].size
     blkmeans = df.groupby(block_name)[response].mean()
     s2_blkmean = blkmeans.var()
     print(s2_blkmean)
 
     SSblock = t*(b-1)*s2_blkmean
+    print(SSblock)
 
     trtmeans = df.groupby(trt_name)[response].mean()
     s2_trtmean = trtmeans.var()
     print(s2_trtmean)
 
     SStrt = b*(t-1)*s2_trtmean
+    print(SStrt)
+
+    s2_all = df[response].var()
+    print(s2_all)
+
+    SStotal = (N-1)*s2_all
+    print(SStotal)
 
 
 if __name__ == '__main__':
