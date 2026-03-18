@@ -14,9 +14,10 @@ def inputHandler(csvfile):
 
 def getMSE(csvfile):
     df, block_name, trt_name, response = inputHandler(csvfile)
-    b= df[block_name].size
-    t= df[trt_name].size
+    b= df[block_name].unique().size
+    t= df[trt_name].unique().size
     N = df[response].size
+    print(b, t)
     blkmeans = df.groupby(block_name)[response].mean()
     s2_blkmean = blkmeans.var()
     print(s2_blkmean)
