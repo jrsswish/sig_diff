@@ -15,7 +15,7 @@ def inputHandler(csvfile):
 
     return df, column_name, trt_name
 
-def getMSE(df, column_name, trt_name, ):
+def getMSE(df, column_name, trt_name):
     s2_all = st.variance(df[column_name])
     N = df[column_name].size
     SStotal = (N - 1) * s2_all
@@ -67,6 +67,7 @@ def significantFinder(csvfile, alpha):
     header = []
 
 
+
     for i in range(t):
         row = []
         if i == 0:
@@ -93,6 +94,7 @@ def significantFinder(csvfile, alpha):
     table = tb.tabulate(data, headers=header,tablefmt="grid")
     print(table)
 
+    print("Therefore the pairwise significance difference are:", sig_diff)
 if __name__ == '__main__':
     csvfile = sys.argv[1]
     significantFinder(csvfile, 0.05)
