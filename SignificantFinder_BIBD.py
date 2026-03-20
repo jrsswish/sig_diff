@@ -49,8 +49,23 @@ def Significant_finder_BIBD(csvfile):
 
     lambda_value = r*(k-1)/(t-1)
     Q_list= []
-    for i in range(t):
-        y_poweri = df.groupby(block_name)[response].mean().values[i]
+    trt_list = df[trt_name].unique().tolist()
+    trt_list.sort()
+    print(trt_list)
+
+    block_avgs = df.groupby(block_name)[response].mean()
+
+    for i in range(N):
+        trt_i = df[trt_name].values[i]
+        # print(trt_i)
+
+        index = trt_list.index(trt_i)
+
+
+
+
+
+
 
 
 
