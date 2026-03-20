@@ -45,13 +45,13 @@ def Significant_finder_BIBD(csvfile):
     b= df[block_name].unique().size
     t= df[trt_name].unique().size
     N = df[response].size
-    r = df.groupby(block_name).count().values[1][1]
-    k = df.groupby(trt_name).count().values[1][1]
+    k = df.groupby(block_name).count().values[1][1]
+    r = df.groupby(trt_name).count().values[1][1]
     lambda_value = r*(k-1)/(t-1)
 
     # this will contain all of the avg of blocks that contain trt[i]
     avg_list = [0]*t
-    Q_list = [0]*b
+    Q_list = [0]*t
     trt_list = df[trt_name].unique().tolist()
     trt_list =natsorted(trt_list)
     blk_list = df[block_name].unique().tolist()
@@ -65,9 +65,8 @@ def Significant_finder_BIBD(csvfile):
     # change the index of the block avgs
     block_avgs = block_avgs.reindex(new_index)
 
-    print(block_avgs)
     trt_avgs = df.groupby(trt_name)[response].mean()
-
+    print(trt_avgs)
     for i in range(N):
         trt_i = df[trt_name].values[i]
         # print(trt_i)
@@ -79,17 +78,16 @@ def Significant_finder_BIBD(csvfile):
         # trt1 idx = 0, trt2 idx = 1 .. ect
         # if idx of trt_i is 0 then the avg_list[0] will be added by block avg of trt[i]
         avg_list[trt_idx] = avg_list[trt_idx] + block_avgs.values[blk_idx]
-        print(avg_list)
 
     # print(avg_list)
-    avg_list = avg_list/k
-    # print(avg_list)
+    avg_list = avg_list/r
+    print(avg_list)
 
     for i in range(t):
         Q_i = r*(trt_avgs.values[i] - avg_list[i])
         Q_list[i] = Q_i
 
-    # print(Q_list)
+    print(Q_list)
 
 
 if __name__ == '__main__':
