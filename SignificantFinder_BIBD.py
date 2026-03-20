@@ -46,9 +46,8 @@ def Significant_finder_BIBD(csvfile):
     N = df[response].size
     r = df.groupby(block_name).count().values[1][1]
     k = df.groupby(trt_name).count().values[1][1]
-
     lambda_value = r*(k-1)/(t-1)
-    Q_list= []
+    sum_list = [0]*t
     trt_list = df[trt_name].unique().tolist()
     trt_list.sort()
     print(trt_list)
@@ -58,8 +57,12 @@ def Significant_finder_BIBD(csvfile):
     for i in range(N):
         trt_i = df[trt_name].values[i]
         # print(trt_i)
+        # take the index
+        idx = trt_list.index(trt_i)
+        # print(index)
+        sum_list[idx] = sum_list[idx] + block_avgs.values[idx]
 
-        index = trt_list.index(trt_i)
+
 
 
 
