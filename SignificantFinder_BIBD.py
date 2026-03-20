@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+from natsort import index_natsorted, natsorted
 
 
 def inputHandler(csvfile):
@@ -47,12 +48,24 @@ def Significant_finder_BIBD(csvfile):
     r = df.groupby(block_name).count().values[1][1]
     k = df.groupby(trt_name).count().values[1][1]
     lambda_value = r*(k-1)/(t-1)
-    sum_list = [0]*t
+
+    # this will contain all of the avg of blocks that contain trt[i]
+    avg_list = [0]*t
+    Q_list = [0]*b
     trt_list = df[trt_name].unique().tolist()
     trt_list.sort()
     print(trt_list)
 
     block_avgs = df.groupby(block_name)[response].mean()
+
+    # takes the value of index
+    index_val = block_avgs.index.tolist()
+    # sort the index so that ex: blk10 will be last instead of 2nd
+    new_index = natsorted(index_val)
+    # change the index of the block avgs
+    block_avgs = block_avgs.reindex(new_index)
+
+    trt_avgs = df.groupby(trt_name)[response].mean()
 
     for i in range(N):
         trt_i = df[trt_name].values[i]
@@ -60,16 +73,18 @@ def Significant_finder_BIBD(csvfile):
         # take the index
         idx = trt_list.index(trt_i)
         # print(index)
-        sum_list[idx] = sum_list[idx] + block_avgs.values[idx]
+        # trt1 idx = 0, trt2 idx = 1 .. ect
+        # if idx of trt_i is 0 then the avg_list[0] will be added by block avg of trt[i]
+        avg_list[idx] = avg_list[idx] + block_avgs.values[idx]
 
+    avg_list = avg_list/k
+    print(avg_list)
 
+    for i in range(t):
+        Q_i = r*(trt_avgs.values[i] - avg_list[i])
+        Q_list[i] = Q_i
 
-
-
-
-
-
-
+    print(Q_list)
 
 
 if __name__ == '__main__':
