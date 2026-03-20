@@ -87,9 +87,8 @@ def Significant_finder_BIBD(csvfile):
         Q_i = r*(trt_avgs.values[i] - avg_list[i])
         Q_list[i] = Q_i
 
-    print(Q_list)
-
-
+    Q_list_squared = [Q_list[i]**2 for i in range(len(Q_list))]
+    SStrt = (k/(lambda_value*t)) * (sum(Q_list_squared))
 if __name__ == '__main__':
     csvfile = sys.argv[1]
     print(Significant_finder_BIBD(csvfile))
