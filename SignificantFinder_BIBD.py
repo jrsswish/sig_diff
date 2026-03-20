@@ -47,9 +47,10 @@ def Significant_finder_BIBD(csvfile):
     r = df.groupby(block_name).count().values[1][1]
     k = df.groupby(trt_name).count().values[1][1]
 
-    lambda_value = r(k-1)/(t-1)
-
-
+    lambda_value = r*(k-1)/(t-1)
+    Q_list= []
+    for i in range(t):
+        y_poweri = df.groupby(block_name)[response].mean().values[i]
 
 
 if __name__ == '__main__':
