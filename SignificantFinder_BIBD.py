@@ -38,8 +38,21 @@ def getMSE(csvfile):
     SStotal = (N-1)*s2_all
     print(SStotal)
 
+def Significant_finder_BIBD(csvfile):
+    df, block_name, trt_name, response = inputHandler(csvfile)
+    MSE = getMSE(csvfile)
+    b= df[block_name].unique().size
+    t= df[trt_name].unique().size
+    N = df[response].size
+    r = df.groupby(block_name).count().values[1][1]
+    k = df.groupby(trt_name).count().values[1][1]
+
+    lambda_value = r(k-1)/(t-1)
+
+
+
 
 if __name__ == '__main__':
     csvfile = sys.argv[1]
-    print(getMSE(csvfile))
+    print(Significant_finder_BIBD(csvfile))
     
